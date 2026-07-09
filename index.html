@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Счётчик OCR" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Счётчик OCR</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero card">
+      <div>
+        <p class="eyebrow">PWA без Mac и App Store</p>
+        <h1>Распознавание показаний счётчика</h1>
+        <p class="subtitle">Сделайте фото табло, проверьте результат и сохраните показание в историю.</p>
+      </div>
+      <div class="status-pill" id="appStatus">Готово</div>
+    </section>
+
+    <section class="card controls-grid">
+      <label>
+        Тип счётчика
+        <select id="meterType">
+          <option>Электроэнергия</option>
+          <option>Вода ХВС</option>
+          <option>Вода ГВС</option>
+          <option>Газ</option>
+          <option>Тепло</option>
+        </select>
+      </label>
+      <label>
+        Объект / лицевой счёт
+        <input id="objectName" type="text" inputmode="text" placeholder="Например: квартира, дача, ЛС" />
+      </label>
+    </section>
+
+    <section class="camera card">
+      <div class="camera-stage">
+        <video id="video" autoplay playsinline muted></video>
+        <canvas id="snapshot" hidden></canvas>
+        <div class="scan-frame">
+          <span></span><span></span><span></span><span></span>
+          <div class="scan-label">Поместите цифры в рамку</div>
+        </div>
+      </div>
+      <div class="button-row">
+        <button id="startCamera" class="secondary">Включить камеру</button>
+        <button id="capture" class="primary">Снять и распознать</button>
+      </div>
+      <div class="button-row secondary-row">
+        <label class="file-button">
+          Загрузить фото
+          <input id="fileInput" type="file" accept="image/*" capture="environment" />
+        </label>
+        <button id="stopCamera" class="ghost">Остановить</button>
+      </div>
+      <p class="hint">На iPhone камера работает только на HTTPS-сайте. GitHub Pages подходит.</p>
+    </section>
+
+    <section class="card result-card">
+      <h2>Результат распознавания</h2>
+      <div class="result-box">
+        <label>
+          Распознанное показание
+          <input id="recognizedValue" type="text" inputmode="decimal" placeholder="Например: 12345.67" />
+        </label>
+        <button id="saveReading" class="primary">Сохранить</button>
+      </div>
+      <details>
+        <summary>Показать весь распознанный текст</summary>
+        <pre id="rawText">Пока нет данных</pre>
+      </details>
+    </section>
+
+    <section class="card history-card">
+      <div class="section-head">
+        <h2>История</h2>
+        <div class="button-row compact">
+          <button id="exportCsv" class="secondary">CSV</button>
+          <button id="clearHistory" class="ghost danger">Очистить</button>
+        </div>
+      </div>
+      <div id="historyList" class="history-list empty">История пока пустая</div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
